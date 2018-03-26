@@ -3,21 +3,21 @@ package database;
 import java.sql.*;
 
 public class Adapter {
-    private static Adapter ourInstance = new Adapter();
+//    private static Adapter ourInstance = new Adapter();
+//
+//    public static Adapter getInstance() {
+//        return ourInstance;
+//    }
+//
+//    private Adapter() {
+//
+//    }
 
     public static void main (String[] args) {
         connect();
     }
 
 
-
-    public static Adapter getInstance() {
-        return ourInstance;
-    }
-
-    private Adapter() {
-
-    }
 
     public static void connect () {
         Connection conn = null;
