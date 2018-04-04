@@ -14,57 +14,74 @@ public class Adapter {
 //    }
 
     public static void main (String[] args) {
-        connect();
+//        testConnect();
+        Adapter sqlQuery = new Adapter();
+
+        String queryTest = "Select * From customers Where CustomerId < 15";
+
+        sqlQuery.createStatement(queryTest, "CustomerId");
+
+
 
     }
 
+    public void exeQuery1 () {
+        String query = "SELECT FirstName,LastName FROM employees";
 
-    public static void createStatement(Connection conn) {
+        try (Connection conn = this.connect();
+             Statement statement = conn.createStatement();
+             ResultSet rs = statement.executeQuery(query) ) {
+
+            while (rs.next()) {
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void createStatement(String query, String columnName) {
+
         try {
+            Connection conn = this.connect();
             Statement statement = conn.createStatement();
-
-            statement.setQueryTimeout(30); // set timeout to 30 sec
-
-
+            ResultSet rs = statement.executeQuery(query);
+            
+            while (rs.next() ) {
+                System.out.println(rs.getString(columnName));
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
-
-
     }
 
-//    // create a database connection
-//    connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
-//
-//    Statement statement = connection.createStatement();
-//    statement.setQueryTimeout(30);  // set timeout to 30 sec.
-//    // delete old table:
-//    statement.executeUpdate("drop table if exists Users");
-//    // create table_
-//    statement.executeUpdate("create table Users (id integer(5), name text)");
-//    // add a user:
-//    PreparedStatement insertUser = connection.prepareStatement("insert into Users (id,name) values (?,?)");
-//    insertUser.setInt(1,1);
-//    insertUser.setString(2,"bob");
-//    // perform query:
-//    insertUser.execute();
-//    // get all users:
-//    PreparedStatement getAll = connection.prepareStatement("select * from Users");
-//    ResultSet rs = statement.executeQuery("select * from Users");
-//            while(rs.next())
-//    {
-//        // read the result set
-//        System.out.println("id: "+ rs.getInt("id")+"  name = " + rs.getString("name"));
-//    }
 
 
-    public static void connect () {
+    private Connection connect() {
+        String url = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/database/chinook.db"; // hjemme pc
         Connection conn = null;
 
         try {
-            String url = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/database/chinook.db";
-//            String url = "jdbc:sqlite:C://Users//Bao Thien//Dropbox//IdeaProjects//src//database//chinook.db";
+            conn = DriverManager.getConnection(url);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return conn;
+    }
+
+
+    public static void testConnect () {
+        Connection conn = null;
+
+        try {
+//            String url = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/database/chinook.db"; // skole pc
+            String url = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/database/chinook.db"; // hjemme pc
 
             // create connection to database
             conn = DriverManager.getConnection(url);
