@@ -112,8 +112,9 @@ public class Adapter {
 //        return albumList;
 //    }
 
-    public void getArtist(String name) {
+    public Artist getArtist(String name) {
         String query = "SELECT ArtistId, Name From artists where Name= ?";
+        Artist artist = null;
 
         try {
             Connection conn = this.connect();
@@ -129,12 +130,14 @@ public class Adapter {
 //                System.out.println("artist name: " + rs.getString("Name")  );
                 System.out.println(String.format("ArtistId: %-5s Artist name: %-5s", rs.getString("ArtistId"), rs.getString("Name") ) );
 
+                artist = new Artist(rs.getInt("artistId"), rs.getString("name"));
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
+        return artist;
     }
 
     public void testQuery1 () {
